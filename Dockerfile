@@ -22,3 +22,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 
 CMD [ "python", "/Desktop/etl/main.py"]
+
