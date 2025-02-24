@@ -1,12 +1,12 @@
 FROM python:3.12-slim
 
-WORKDIR /Desktop/etl
+WORKDIR /Desktop/etl/docker-bindmount
 
-COPY main.py /Desktop/etl/
-COPY requirements.txt /Desktop/etl/
-COPY metadata.txt /Desktop/etl/
-COPY file_arrival/ /Desktop/etl/file_arrival
-COPY processed_files/ /Desktop/etl/processed_files
+COPY main.py /Desktop/etl/docker-bindmount
+COPY requirements.txt /Desktop/etl/docker-bindmount
+COPY metadata.txt /Desktop/etl/docker-bindmount
+COPY file_arrival/ /Desktop/etl/docker-bindmount/file_arrival
+COPY processed_files/ /Desktop/etl/docker-bindmount/processed_files
 
 
 ARG ARG_PATH

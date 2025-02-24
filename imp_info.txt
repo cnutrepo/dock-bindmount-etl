@@ -1,0 +1,50 @@
+docker build -t bindmountimage6 
+--build-arg ARG_PATH="/Desktop/etl/docker-bindmount/file_arrival/" 
+--build-arg ARG_metadatatxt="/Desktop/etl/docker-bindmount/metadata.txt" 
+--build-arg ARG_proccessed="/Desktop/etl/docker-bindmount/processed_files/" 
+--build-arg ARG_counter="/Desktop/etl/docker-bindmount/processed_files/counter.txt" .
+
+Notice: my DockerFile Workdir (/Desktop/etl/docker-bindmount). 
+so use the path of the container workdir + file/folder, not the absolute path of the folder.files of your pc
+
+This is wrong:
+counter="/Users/x/Desktop/xyz/abc-etl/processed_files/counter.txt"
+path="/Users/x/Desktop/xyz/abc-etl//file_arrival/"
+metadatatxt="/Users/x/Desktop/xyz/abc-etl/metadata.txt"
+proccessed="/Users/x/Desktop/xyz/abc-etl//processed_files/"
+
+instead use the paths of the container like "/Desktop/etl/docker-bindmount/file_arrival/"  etc.
+
+
+Note: When using bind mounts, the folder on your host machine (your Mac) can be mapped to any directory inside the container, but they don't have to match by default.
+
+the only place where the folder of you pc is mapped to the container is : --mount type=bind,source="$(pwd)"/dock-bindmount-etl/,target=/Desktop/etl/docker-bindmount.
+After this, work only with the file structure of the container
+The container only understands its own filesystem
+
+
+
+docker run --name etl_container6 \
+  --network etl_net \
+  --mount type=bind,source="$(pwd)"/dock-bindmount-etl/,target=/Desktop/etl/docker-bindmount \
+  -it bindmountimage6 /bin/sh
+
+
+NOTE: The filenames and directory structure inside the container should match the ones on your Mac if you are using a bind mount.
+ 
+ you only use the path of the container to access x file or folder, but the file/folder itself dosent change. only the path to access that resource(file/folder) changes (to the path of the container)
+
+ex: 
+absolute path : /users/username/Desktop/etl-folder/etl-subfolderx/etlfile1
+container path : /Desktop/etl/etl-subfolderx/etlfile1
+                   <workdir>   <this should be the same, i,e the resource names>
+
+
+
+
+
+  Basically, 
+
+  s1: create a workdir in container
+  s2: map the folder (on pc) to container. (this will connect/Sync the pc folder to container. "logically")
+  s3: use container workdir path before accessing the resources (the resource names must be the same though, only the absolute path changes)

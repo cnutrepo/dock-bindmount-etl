@@ -18,7 +18,7 @@ def proccess_new_file(file):
         with open(os.getenv("counter"), "r") as count:
             counter_no = count.read().strip() 
             counter = int(counter_no)
-            print(counter)
+           
 
 
             
@@ -31,7 +31,7 @@ def proccess_new_file(file):
         df['age'].fillna(df['age'].median(), inplace=True)
         df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
         #print(df)
-        processed_path = f"{os.getenv('proccessed')}{counter}.json"
+        processed_path = f"{os.getenv('proccessed')}data{counter}.json"
         try:
             df.to_json( processed_path, orient="records")
             with open(os.getenv("counter"), "w") as new_counter:
@@ -51,7 +51,8 @@ def proccess_new_file(file):
 def check_file():
     new_file = ""
     path = ""
-    files = glob.glob(f"{os.getenv('path')}/*.json")  # List of full file paths
+    files = glob.glob(f"{os.getenv('path')}/*.json")
+    print(files)  # List of full file paths
 
     try:
         with open(f"{os.getenv('metadatatxt')}", "r") as file:
@@ -81,5 +82,4 @@ def update_metadata(new_file):
 
 if __name__ == "__main__":
     check_file()
-   
     
